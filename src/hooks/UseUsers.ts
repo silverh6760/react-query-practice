@@ -1,27 +1,36 @@
+import { useQuery } from "@tanstack/react-query";
 import { getUsers } from "../services/UserService";
-import { useEffect, useState } from "react";
 import type { User } from "../types/UserType";
 
 export function useUsers() {
-  const [userList, setUserList] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+	// const [userList, setUserList] = useState<User[]>([]);
+	// const [isLoading, setIsLoading] = useState(true);
+	// const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setIsLoading(true);
+	const {
+		data: userList = [],
+		isLoading,
+		error,
+	} = useQuery<User[], Error>({
+		queryKey: ["users"],
+		queryFn: getUsers,
+	});
 
-        const users: User[] = await getUsers();
-        setUserList(users);
-      } catch (err) {
-        setError("Failed to fetch users");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUsers();
-  }, []);
+	// useEffect(() => {
+	// 	const fetchUsers = async () => {
+	// 		try {
+	// 			setIsLoading(true);
 
-  return { isLoading, userList, error };
+	// 			const users: User[] = await getUsers();
+	// 			setUserList(users);
+	// 		} catch (err) {
+	// 			setError("Failed to fetch users");
+	// 		} finally {
+	// 			setIsLoading(false);
+	// 		}
+	// 	};
+	// 	fetchUsers();
+	// }, []);
+
+	return { isLoading, userList, error: error ? "fail to fetch" : "" };
 }
