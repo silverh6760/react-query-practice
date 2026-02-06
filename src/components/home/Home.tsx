@@ -1,11 +1,13 @@
 import Users from "../Users";
+import AddUser from "./addUser";
 
 function Home() {
-  return (
-    <div>
-      <Users />
-    </div>
-  );
+	return (
+		<div>
+			<AddUser />
+			<Users />
+		</div>
+	);
 }
 
 export default Home;
